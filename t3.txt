@@ -1,0 +1,13 @@
+Round: 0
+Computer:
+	Score: 20
+	Hand: H7 CA S4 SA
+	Pile: 
+Human:
+	Score: 19
+	Hand: D7 H8 SX S8 
+	Pile: 
+Table: [ [DJ C3] ] D3 SK
+Build Owner: [ [DJ C3] ] Computer
+Deck: 
+Next Player: Computer
