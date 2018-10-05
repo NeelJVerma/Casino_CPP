@@ -182,6 +182,7 @@ bool Human::IncreaseBuild(
     return false;
   }
 
+  std::cout << build_sum << std::endl;
   if (!HasCardWithBuildSum(card_index, build_sum)) {
     GUI::DisplayCannotBuildMessage();
     return false;

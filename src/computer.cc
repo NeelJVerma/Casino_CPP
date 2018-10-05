@@ -24,10 +24,8 @@ bool Computer::MakeMove(std::shared_ptr<Table>& table) {
     return true;
   }
 
-  auto capture_card = hand_[best_capture->GetPlayedCardIndex()];
-  auto build_card = hand_[best_build->GetPlayedCardIndex()];
-
   if (!can_build) {
+    auto capture_card = hand_[best_capture->GetPlayedCardIndex()];
     GUI::DisplayAiCaptureOption(best_capture, table, capture_card);
     Capture(best_capture, table);
     table->SetLastCapturedIndex(number_);
@@ -35,10 +33,14 @@ bool Computer::MakeMove(std::shared_ptr<Table>& table) {
   }
 
   if (!can_capture) {
+    auto build_card = hand_[best_build->GetPlayedCardIndex()];
     GUI::DisplayAiBuildOption(best_build, table, build_card);
     Build(best_build, table);
     return true;
   }
+
+  auto capture_card = hand_[best_capture->GetPlayedCardIndex()];
+  auto build_card = hand_[best_build->GetPlayedCardIndex()];
 
   if (best_capture->GetScore() > best_build->GetScore()) {
     GUI::DisplayAiCaptureOption(best_capture, table, capture_card);

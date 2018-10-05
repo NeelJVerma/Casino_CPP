@@ -32,7 +32,7 @@ std::shared_ptr<Card> Player::RemoveFromHand(const unsigned& index) {
 
 std::string Player::ToString() const {
   std::string player = "";
-  player += (is_human_ ? "Human:\n" : "Player:\n");
+  player += (is_human_ ? "Human:\n" : "Computer:\n");
   player += "\tScore: ";
   player += std::to_string(score_);
   player += "\n\tHand: ";
@@ -576,6 +576,13 @@ std::shared_ptr<BuildNode> Player::FindBestSingleBuild(
   return single_node;
 }
 
+/**
+ * Description: Finds the best multi build.
+ * Parameters: const unsgined& index: The index of the played card.
+ * const std::shared_ptr<Table>& table: The current table state.
+ * Returns: The best multi build.
+ */
+
 std::shared_ptr<BuildNode> Player::FindBestMultiBuild(
     const unsigned& index, const std::shared_ptr<Table>& table) const {
   auto loose_cards = table->GetLooseCards();
@@ -654,6 +661,13 @@ std::shared_ptr<BuildNode> Player::FindBestMultiBuild(
   return multi_node;
 }
 
+/**
+ * Description: Finds the best increase build.
+ * Parameters: const unsgined& index: The index of the played card.
+ * const std::shared_ptr<Table>& table: The current table state.
+ * Returns: The best increase build.
+ */
+
 std::shared_ptr<BuildNode> Player::FindBestIncreaseBuild(
     const unsigned& index, const std::shared_ptr<Table>& table) const {
   auto builds = table->GetCurrentBuilds();
@@ -718,6 +732,12 @@ std::shared_ptr<BuildNode> Player::FindBestIncreaseBuild(
   return increase_node;
 }
 
+/**
+ * Description: Gets the heuristic value of a certain card.
+ * Parameters: sonst std::shared_ptr<Card>& card: The card.
+ * Returns: The heuristic.
+ */
+
 unsigned Player::GetCardScore(const std::shared_ptr<Card>& card) const {
   if (card->ToString() == "DX") {
     return 4;
@@ -733,6 +753,12 @@ unsigned Player::GetCardScore(const std::shared_ptr<Card>& card) const {
 
   return 1;
 }
+
+/**
+ * Description: Shows the best move to the human.
+ * Parameters: const std::shared_ptr<Table>& table: The current table state.
+ * Returns: Nothing.
+ */
 
 void Player::ShowHint(const std::shared_ptr<Table>& table) const {
   auto best_capture = FindBestCapture(table);
@@ -756,19 +782,21 @@ void Player::ShowHint(const std::shared_ptr<Table>& table) const {
     return;
   }
 
-  auto capture_card = hand_[best_capture->GetPlayedCardIndex()];
-  auto build_card = hand_[best_build->GetPlayedCardIndex()];
-
   if (!can_build) {
+    auto capture_card = hand_[best_capture->GetPlayedCardIndex()];
     GUI::DisplayAiCaptureOption(best_capture, table, capture_card);
     return;
   }
 
   if (!can_capture) {
+    auto build_card = hand_[best_build->GetPlayedCardIndex()];
     GUI::DisplayAiBuildOption(best_build, table, build_card);
     return;
   }
 
+  auto capture_card = hand_[best_capture->GetPlayedCardIndex()];
+  auto build_card = hand_[best_build->GetPlayedCardIndex()];
+  
   if (best_capture->GetScore() > best_build->GetScore()) {
     GUI::DisplayAiCaptureOption(best_capture, table, capture_card);
     return;
