@@ -73,7 +73,7 @@ void Tournament::PlayLoaded(std::ifstream& in_file) {
 }
 
 /**
- * Description: Play a new tournament state.
+ * Description: Play a new tournament.
  * Parameters: None.
  * Returns: Nothing.
  */
