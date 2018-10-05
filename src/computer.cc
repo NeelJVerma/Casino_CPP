@@ -79,9 +79,11 @@ void Computer::Build(
   unsigned type = build_node->GetType();
   auto loose_indices = build_node->GetLooseCardIndices();
   auto builds = table->GetCurrentBuilds();
-  unsigned build_sum = hand_[build_node->GetPlayedCardIndex()]->GetValue();
+  unsigned played_card_index = build_node->GetPlayedCardIndex();
+  auto played_card = hand_[played_card_index];
+  unsigned build_sum = played_card->GetValue();
   std::vector<std::shared_ptr<Card>> cards;
-  cards.push_back(hand_[build_node->GetPlayedCardIndex()]);
+  cards.push_back(played_card);
 
   for (unsigned index : loose_indices) {
     cards.push_back(table->GetLooseCard(index));
@@ -89,14 +91,13 @@ void Computer::Build(
   }
 
   if (type == BuildNode::kMake) {
-    MakeBuildAction(build_node->GetPlayedCardIndex(), cards, loose_indices,
-        build_sum, table);
+    MakeBuildAction(played_card_index, cards, loose_indices, build_sum, table);
   } else if (type == BuildNode::kAdd) {
-    AddToBuildAction(build_node->GetPlayedCardIndex(),
-        builds[build_node->GetBuildIndex()], cards, loose_indices, table);
+    auto build = builds[build_node->GetBuildIndex()];
+    AddToBuildAction(played_card_index, build, cards, loose_indices, table);
   } else {
-    IncreaseBuildAction(build_node->GetPlayedCardIndex(),
-        builds[build_node->GetBuildIndex()],
-        builds[build_node->GetBuildIndex()]->GetBuildSum(), table);
+    auto build = builds[build_node->GetBuildIndex()];
+    IncreaseBuildAction(build_node->GetPlayedCardIndex(), build,
+        build->GetBuildSum() + played_card->GetValue(), table);
   }
 }
