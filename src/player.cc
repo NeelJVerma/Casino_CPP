@@ -394,6 +394,7 @@ std::shared_ptr<CaptureNode> Player::FindBestCapture(
         max_loose = loose_indices;
         max_builds = build_indices;
         max_set = valid_sets[j];
+        score -= set_score;
       } else {
         score -= set_score;
       }

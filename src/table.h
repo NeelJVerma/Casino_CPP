@@ -10,7 +10,7 @@ class Table {
   Table& operator=(const Table& table) = delete;
 
   // Constructors
-  Table() = default;
+  Table() : last_captured_index_(0) {}
 
   // Accessors
   inline std::vector<std::shared_ptr<Card>> GetLooseCards() const {
